@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: api-gateway
+  reactor:
+    context-propagation: auto
   cloud:
     gateway:
       server:
@@ -62,5 +64,19 @@ springdoc:
         url: /messages/v3/api-docs
 
 logging:
+  pattern:
+    level: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - [%applicationName,%X{traceId:-},%X{spanId:-}] - %msg%n"
   level:
     com.founderlink: INFO
+
+jwt:
+  secret: ${JWT_SECRET:FounderLinkDevSecretKeyMustBeAtLeast32BytesLong!!}
+
+management:
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
