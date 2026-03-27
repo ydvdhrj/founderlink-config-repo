@@ -28,9 +28,12 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
+jwt:
+  secret: ${JWT_SECRET:FounderLinkDevSecretKeyMustBeAtLeast32BytesLong!!}
+
 logging:
   pattern:
-    level: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - [%applicationName,%X{traceId:-},%X{spanId:-}] - %msg%n"
+    level: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - [%X{traceId:-},%X{spanId:-}] - %msg%n"
   level:
     com.founderlink: INFO
 

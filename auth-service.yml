@@ -8,7 +8,7 @@ spring:
   datasource:
     # Use the same port as your server (\conninfo → Server Port). Default here is 5433 vs common 5432.
     # Override: SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5433/auth
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/auth}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/auth_db}
     username: dheeraj
     password: password123
     driver-class-name: org.postgresql.Driver
@@ -43,7 +43,7 @@ jwt:
 
 logging:
   pattern:
-    level: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - [%applicationName,%X{traceId:-},%X{spanId:-}] - %msg%n"
+    level: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - [%X{traceId:-},%X{spanId:-}] - %msg%n"
   level:
     com.founderlink: INFO
 

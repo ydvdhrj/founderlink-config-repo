@@ -6,7 +6,7 @@ spring:
     name: user-service
 
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/user_service}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/users_db}
     username: ${SPRING_DATASOURCE_USERNAME:dheeraj}
     password: ${SPRING_DATASOURCE_PASSWORD:password123}
     driver-class-name: org.postgresql.Driver
@@ -40,7 +40,7 @@ springdoc:
 
 logging:
   pattern:
-    level: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - [%applicationName,%X{traceId:-},%X{spanId:-}] - %msg%n"
+    level: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - [%X{traceId:-},%X{spanId:-}] - %msg%n"
   level:
     com.founderlink: INFO
 

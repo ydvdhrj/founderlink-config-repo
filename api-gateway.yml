@@ -10,34 +10,39 @@ spring:
     gateway:
       server:
         webflux:
+          # Bound upstream waits so Swagger does not spin forever when a service is down
+          httpclient:
+            connect-timeout: 5000
+            response-timeout: 45s
           discovery:
             locator:
               enabled: false
           routes:
             - id: auth-service
-              uri: lb://auth-service
+              uri: lb://AUTH-SERVICE
               predicates:
                 - Path=/auth/**
             - id: user-service
-              uri: lb://user-service
+              uri: lb://USER-SERVICE
               predicates:
-                - Path=/users/**
+                # Match collection root GET/POST /users as well as /users/**
+                - Path=/users,/users/**
             - id: startup-service
-              uri: lb://startup-service
+              uri: lb://STARTUP-SERVICE
               predicates:
-                - Path=/startups/**
+                - Path=/startups,/startups/**
             - id: investment-service
-              uri: lb://investment-service
+              uri: lb://INVESTMENT-SERVICE
               predicates:
-                - Path=/investments/**
+                - Path=/investments,/investments/**
             - id: team-service
-              uri: lb://team-service
+              uri: lb://TEAM-SERVICE
               predicates:
-                - Path=/teams/**
+                - Path=/teams,/teams/**
             - id: messaging-service
-              uri: lb://messaging-service
+              uri: lb://MESSAGING-SERVICE
               predicates:
-                - Path=/messages/**
+                - Path=/messages,/messages/**
 
 eureka:
   instance:
@@ -65,7 +70,7 @@ springdoc:
 
 logging:
   pattern:
-    level: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - [%applicationName,%X{traceId:-},%X{spanId:-}] - %msg%n"
+    level: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - [%X{traceId:-},%X{spanId:-}] - %msg%n"
   level:
     com.founderlink: INFO
 

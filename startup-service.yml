@@ -1,6 +1,8 @@
 # Port 8083: user-service uses 8082 in this workspace (spec 8082 would conflict).
 server:
   port: ${SERVER_PORT:8083}
+  # So ServletUriComponentsBuilder + Location reflects the gateway host when proxied
+  forward-headers-strategy: framework
 
 spring:
   application:
@@ -11,6 +13,22 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME:dheeraj}
     password: ${SPRING_DATASOURCE_PASSWORD:password123}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      # Fail fast if Postgres is down (avoids “loading forever” on GET /startups)
+      connection-timeout: 10000
+      maximum-pool-size: 10
+
+  cloud:
+    openfeign:
+      client:
+        config:
+          # GET /startups/{id} loads founder via Feign — without timeouts the call can hang on bad networking/Eureka
+          default:
+            connectTimeout: 5000
+            readTimeout: 15000
+          user-service:
+            connectTimeout: 5000
+            readTimeout: 15000
 
   jpa:
     hibernate:
@@ -33,6 +51,10 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
+# Same signing secret as auth-service / api-gateway
+jwt:
+  secret: ${JWT_SECRET:FounderLinkDevSecretKeyMustBeAtLeast32BytesLong!!}
+
 # Must match api-gateway route prefix so /startups/v3/api-docs resolves when proxied.
 springdoc:
   api-docs:
@@ -42,7 +64,7 @@ springdoc:
 
 logging:
   pattern:
-    level: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - [%applicationName,%X{traceId:-},%X{spanId:-}] - %msg%n"
+    level: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - [%X{traceId:-},%X{spanId:-}] - %msg%n"
   level:
     com.founderlink: INFO
 
