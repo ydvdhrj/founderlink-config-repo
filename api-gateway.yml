@@ -18,6 +18,10 @@ spring:
             locator:
               enabled: false
           routes:
+            - id: notification-health-alias
+              uri: lb://NOTIFICATION-SERVICE
+              predicates:
+                - Path=/health
             - id: auth-service
               uri: lb://AUTH-SERVICE
               predicates:
@@ -43,6 +47,12 @@ spring:
               uri: lb://MESSAGING-SERVICE
               predicates:
                 - Path=/messages,/messages/**
+            - id: notification-service
+              uri: lb://NOTIFICATION-SERVICE
+              predicates:
+                - Path=/notifications,/notifications/**
+              filters:
+                - StripPrefix=1
 
 eureka:
   instance:
@@ -67,6 +77,8 @@ springdoc:
         url: /teams/v3/api-docs
       - name: Messaging Service
         url: /messages/v3/api-docs
+      - name: Notification Service
+        url: /notifications/v3/api-docs
 
 logging:
   pattern:
