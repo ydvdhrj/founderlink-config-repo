@@ -4,9 +4,8 @@ server:
 spring:
   application:
     name: messaging-service
-  data:
-    mongodb:
-      uri: mongodb://founderlink-mongo:27017/messaging_db
+  mongodb:
+    uri: ${SPRING_MONGODB_URI:mongodb://founderlink-mongo:27017/messaging_db}
   rabbitmq:
     host: ${SPRING_RABBITMQ_HOST:localhost}
     port: ${SPRING_RABBITMQ_PORT:5672}
