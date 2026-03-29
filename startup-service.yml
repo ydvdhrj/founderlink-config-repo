@@ -77,10 +77,10 @@ resilience4j:
         wait-duration-in-open-state: 10000ms
 
 management:
-  zipkin:
-    tracing:
-      endpoint: http://localhost:9411/api/v2/spans
   tracing:
     enabled: true
     sampling:
       probability: 1.0
+    export:
+      zipkin:
+        endpoint: http://localhost:9411/api/v2/spans
